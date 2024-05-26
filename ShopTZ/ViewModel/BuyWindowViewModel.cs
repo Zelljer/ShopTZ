@@ -47,6 +47,8 @@ namespace ShopTZ.ViewModel
                 foreach (Product product in ListProducts)
                 {
                     names += product.ProductName;
+                    if (product != ListProducts.Last())
+                        names += " ; ";
                 }
                 return names;
             }
