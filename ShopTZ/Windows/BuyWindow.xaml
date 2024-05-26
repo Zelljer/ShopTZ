@@ -1,0 +1,57 @@
+﻿<Window x:Class="ShopTZ.Windows.BuyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ShopTZ.Windows"
+        mc:Ignorable="d"
+        Title="BuyWindow" Height="500" Width="450">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock FontSize="30" Margin="10,0,0,0">Корзина:</TextBlock>
+
+        <DataGrid Grid.Row="1" HorizontalAlignment="Center" x:Name="DGrid" AutoGenerateColumns="False" IsReadOnly="True" Width="400" ItemsSource="{Binding ListProducts}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" Binding="{Binding BuyListId}" Width="35" FontFamily="TW Cen MT"></DataGridTextColumn>
+                <DataGridTextColumn Header="Наименование" Binding="{Binding ProductName}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
+                <DataGridTextColumn Header="Кол-во" Binding="{Binding BuyCount}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
+                <DataGridTextColumn Header="Цена за ед." Binding="{Binding ProductCost}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
+                <DataGridTextColumn Header="Цена" Binding="{Binding BuyCost}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <WrapPanel Grid.Row="2" HorizontalAlignment="Center" Width="400" >
+            <TextBlock  FontSize="15" Text="Итог: "  />
+            <TextBlock  FontSize="15" Text="{Binding finCost}" />
+        </WrapPanel>
+        <WrapPanel Grid.Row="3">
+            <TextBlock  FontSize="15" Text="Кол-во товаров к покупке: " Margin="10,0,0,0"/>
+            <TextBlock FontSize="15" Text="{Binding finCount}"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="4">
+            <TextBlock   FontSize="15" Text="Сумма к оплате: "  Margin="10,0,0,0"/>
+            <TextBlock FontSize="15" Text="{Binding finCost}"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="5">
+            <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Text="Покупаемые продукты: " Height="30" Margin="10,0,0,0"/>
+            <TextBlock FontSize="15" Text="{Binding finNames}" TextWrapping="Wrap" Margin="10,0,0,0"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="6">
+            <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Text="Сдача: " Height="30" Margin="10,0,0,0"/>
+            <TextBlock FontSize="15" Text="{Binding userCash}" />
+        </WrapPanel>
+
+        <Button x:Name="BuyButton" Command="{Binding BuyButton_Click}" Grid.Row="8" Width="125"  Content="Оплатить"/>
+    </Grid>
+</Window>
+
