@@ -107,6 +107,7 @@ namespace ShopTZ.ViewModel
                 return null ?? new RelayCommand(obj =>
                 {
                     DeleteProduct(SelectedProduct);
+                    Invalidate();
                 });
             }
         }
@@ -131,6 +132,7 @@ namespace ShopTZ.ViewModel
                 {
                     AddProduct addproduct = new AddProduct(null);
                     addproduct.ShowDialog();
+                    Invalidate();
                 });
             }
         }
