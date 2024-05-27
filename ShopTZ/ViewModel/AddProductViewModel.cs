@@ -8,56 +8,85 @@ using System.Windows;
 
 namespace ShopTZ.ViewModel
 {
-    public class AddProductViewModel : AddProductModel
+    public class AddProductViewModel : BaseViewModel
     {
+        private Product _currentproduct;
+
         public AddProductViewModel(Product selectedProduct)
         {
             if (selectedProduct != null)
-                currentproduct = selectedProduct;
+                _currentproduct = selectedProduct;
+            else
+                _currentproduct = new Product();
         }
-
-        public RelayCommand BtnSaveClick
-        {
-            get
-            {
-                return null ?? new RelayCommand(obj =>
-                {
-                    SaveProduct(currentproduct);
-                });
-            }
-        }
-
-        public Product currentproduct = new Product();
 
         public int ID
         {
-            get { return currentproduct.ProductID; }
-            set { currentproduct.ProductID = value; }
+            get => _currentproduct.ProductID; 
+            set { _currentproduct.ProductID = value; OnPropertyChanged(); }
         }
         public string Name
         {
-            get { return currentproduct.ProductName; }
-            set { currentproduct.ProductName = value; }
+            get => _currentproduct.ProductName; 
+            set { _currentproduct.ProductName = value; OnPropertyChanged(); }
         }
         public string Unit
         {
-            get { return currentproduct.ProductUnit; }
-            set { currentproduct.ProductUnit = value; }
+            get => _currentproduct.ProductUnit; 
+            set { _currentproduct.ProductUnit = value; OnPropertyChanged(); }
         }
         public int Quantity
         {
-            get { return currentproduct.ProductQuantity; }
-            set { currentproduct.ProductQuantity = value; }
+            get => _currentproduct.ProductQuantity; 
+            set { _currentproduct.ProductQuantity = value; OnPropertyChanged(); }
         }
         public decimal Cost
         {
-            get { return currentproduct.ProductCost; }
-            set { currentproduct.ProductCost = value; }
+            get => _currentproduct.ProductCost; 
+            set { _currentproduct.ProductCost = value; OnPropertyChanged(); }
         }
         public decimal SummForProduction
         {
-            get { return currentproduct.ProductSummForProduction; }
-            set { currentproduct.ProductSummForProduction = value; }
+            get => _currentproduct.ProductSummForProduction; 
+            set { _currentproduct.ProductSummForProduction = value; OnPropertyChanged(); }
+        }
+
+        public RelayCommand BtnSaveClick => new RelayCommand(obj =>
+        {
+            SaveProduct(_currentproduct);
+        });
+
+        private void SaveProduct(Product product)
+        {
+            StringBuilder errors = new StringBuilder();
+            if (string.IsNullOrWhiteSpace(product.ProductName))
+                errors.AppendLine("Укажите наименование продукта");
+            if (string.IsNullOrWhiteSpace(product.ProductUnit))
+                errors.AppendLine("Укажите ед. измерения продукта");
+            if (product.ProductCost < 0)
+                errors.AppendLine("Цена продукта не может быть отрицательной");
+            if (product.ProductQuantity < 0)
+                errors.AppendLine("Количество продукта не может быть отрицательным");
+            if (product.ProductSummForProduction < 0)
+                errors.AppendLine("Сумма для производства продукта не может быть отрицательной");
+
+            if (errors.Length > 0)
+            {
+                MessageBox.Show(errors.ToString());
+                return;
+            }
+
+            if (product.ProductID == 0)
+                TZEntities.GetContext().Product.Add(product);
+            try
+            {
+                TZEntities.GetContext().SaveChanges();
+                MessageBox.Show("Информация сохранена");
+            }
+            catch
+            {
+                MessageBox.Show("Произошла ошибка, повторите попытку позже");
+            }
         }
     }
 }

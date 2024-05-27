@@ -32,23 +32,23 @@
         </DataGrid>
         <WrapPanel Grid.Row="2" HorizontalAlignment="Center" Width="400" >
             <TextBlock  FontSize="15" Text="Итог: "  />
-            <TextBlock  FontSize="15" Text="{Binding finCost}" />
+            <TextBlock  FontSize="15" Text="{Binding FinaleCost}" />
         </WrapPanel>
         <WrapPanel Grid.Row="3">
             <TextBlock  FontSize="15" Text="Кол-во товаров к покупке: " Margin="10,0,0,0"/>
-            <TextBlock FontSize="15" Text="{Binding finCount}"/>
+            <TextBlock FontSize="15" Text="{Binding FinaleCount}"/>
         </WrapPanel>
         <WrapPanel Grid.Row="4">
             <TextBlock   FontSize="15" Text="Сумма к оплате: "  Margin="10,0,0,0"/>
-            <TextBlock FontSize="15" Text="{Binding finCost}"/>
+            <TextBlock FontSize="15" Text="{Binding FinaleCost}"/>
         </WrapPanel>
         <WrapPanel Grid.Row="5">
             <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Text="Покупаемые продукты: " Height="30" Margin="10,0,0,0"/>
-            <TextBlock FontSize="15" Text="{Binding finNames}" TextWrapping="Wrap" Margin="10,0,0,0"/>
+            <TextBlock FontSize="15" Text="{Binding FinaleNames}" TextWrapping="Wrap" Margin="10,0,0,0"/>
         </WrapPanel>
         <WrapPanel Grid.Row="6">
             <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Text="Сдача: " Height="30" Margin="10,0,0,0"/>
-            <TextBlock FontSize="15" Text="{Binding userCash}" />
+            <TextBlock FontSize="15" Text="{Binding UserCash}" />
         </WrapPanel>
 
         <Button x:Name="BuyButton" Command="{Binding BuyButton_Click}" Grid.Row="8" Width="125"  Content="Оплатить"/>

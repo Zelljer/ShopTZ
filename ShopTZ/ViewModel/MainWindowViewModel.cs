@@ -1,83 +1,91 @@
 ﻿using ShopTZ.Model;
+using ShopTZ.Utils;
 using ShopTZ.Windows;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ShopTZ.ViewModel
 {
-    public class MainWindowViewModel : MainWindowModel
+    public class MainWindowViewModel : BaseViewModel
     {
-        public User currentUser = TZEntities.GetContext().User.ToList()[0];
-        public decimal userBalance
+
+        public MainWindowViewModel()
         {
-            get { return currentUser.UserMoney; }
+            _productList = TZEntities.GetContext().Product.ToObservable();
+            _currentUser = TZEntities.GetContext().User.ToList()[0];
+            _SelectedProduct = new Product();
+            _searchFilter = "";
+    }
+
+        private User _currentUser { get; set; }
+        private List<Product> _buyingdProducts = new List<Product>();
+        private bool _isSelected = false;
+
+        public decimal UserBalance
+        {
+            get => _currentUser.UserMoney; 
             set
             {
-                currentUser.UserMoney = value;
-                Invalidate();
+                _currentUser.UserMoney = value;
+                OnPropertyChanged();
             }
         }
 
-        public List<Product> buyingdProducts = new List<Product>();
-
-        public Product _SelectedProduct = new Product();
+        private Product _SelectedProduct;
         public Product SelectedProduct
         {
-            get { return _SelectedProduct; }
+            get => _SelectedProduct; 
             set
             {
                 _SelectedProduct = value;
                 if (_SelectedProduct != null)
-                    isselected = true;
-                Invalidate();
+                    _isSelected = true;
+                OnPropertyChanged();
             }
         }
-
-        public int _selectedProductsCount = 0;
-        public int selectedProductsCount 
+       
+        private int _selectedProductsCount;
+        public int SelectedProductsCount 
         { 
-            get
-            {
-                return _selectedProductsCount;
-            }
+            get => _selectedProductsCount; 
             set
             {
                 if (value >= 0)
                     _selectedProductsCount = value;
-                Invalidate();
+                OnPropertyChanged();
             }
         }
-        public bool isselected = false;
 
-        public IEnumerable<Product> _ProductList = TZEntities.GetContext().Product.ToList();
-        public IEnumerable<Product> ProductList
+
+        private ObservableCollection<Product> _productList;
+        public ObservableCollection<Product> ProductList
         {
-            get
-            {
-                return _ProductList;
-            }
+            get => _productList;
             set
             {
-                _ProductList = value;
-                Invalidate();
+                _productList = value;
+                OnPropertyChanged();
             }
         }
 
-        public string _SearchFilter = "";
+        private string _searchFilter;
         public string SearchFilter
         {
-            get { return _SearchFilter; }
+            get => _searchFilter; 
             set
             {
-                _SearchFilter = value;
-                Invalidate();
+                _searchFilter = value;
+                OnPropertyChanged();
             }
         }
 
+        /*
         public string BuyButtonVisible
         {
             get
@@ -86,7 +94,7 @@ namespace ShopTZ.ViewModel
                 return "Collapsed";
             }
             set
-            { Invalidate(); }
+            { OnPropertyChanged(); }
         }
 
         public string UpperButtonVisible
@@ -97,118 +105,119 @@ namespace ShopTZ.ViewModel
                 return "Collapsed";
             }
             set
-            { Invalidate(); }
-        }
+            { OnPropertyChanged(); }
+        }*/
 
-        public RelayCommand Delete_Button_Click
-        {
-            get
-            {
-                return null ?? new RelayCommand(obj =>
-                {
-                    DeleteProduct(SelectedProduct);
-                    Invalidate();
-                });
+
+        private bool _isBuyButton;
+        public bool isBuyButton 
+        { 
+            get =>  _isBuyButton;
+            set
+            { 
+                _isBuyButton = value;
+                //_isBuyButton = selectedProductsCount > 0;
+                OnPropertyChanged();
             }
         }
 
-        public RelayCommand infoButton_Click
+        private bool _isUpperButton;
+        public bool isUpperButton
         {
-            get
+            get => _isUpperButton;
+            set
             {
-                return null ?? new RelayCommand(obj =>
+                _isUpperButton = value;
+                //_isUpperButton = selectedProductsCount > 0;
+                OnPropertyChanged();
+            }
+        }
+
+
+
+
+
+
+
+
+
+        public RelayCommand Delete_Button_Click => new RelayCommand(obj =>
+                {
+                    DeleteProduct(SelectedProduct);
+                    OnPropertyChanged();
+                });
+            
+        
+
+        public RelayCommand infoButton_Click => new RelayCommand(obj =>
                 {
                     InfoProduct info = new InfoProduct(SelectedProduct);
                     info.ShowDialog();
                 });
-            }
-        }
 
-        public RelayCommand Add_Button_Click
-        {
-            get
-            {
-                return null ?? new RelayCommand(obj =>
+
+        public RelayCommand Add_Button_Click =>  new RelayCommand(obj =>
                 {
                     AddProduct addproduct = new AddProduct(null);
                     addproduct.ShowDialog();
-                    Invalidate();
+                    OnPropertyChanged();
                 });
-            }
-        }
 
-        public RelayCommand Edit_Button_Click
-        {
-            get
-            {
-                return null ?? new RelayCommand(obj =>
+
+        public RelayCommand Edit_Button_Click =>  new RelayCommand(obj =>
                 {
                     AddProduct addproduct = new AddProduct(SelectedProduct);
                     addproduct.ShowDialog();
                 });
-            }
-        }
 
-        public RelayCommand Buy_Button_Click
-        {
-            get
-            {
-                return null ?? new RelayCommand(obj =>
+
+        public RelayCommand Buy_Button_Click => new RelayCommand(obj =>
                 {
-                    BuyWindow buy = new BuyWindow(buyingdProducts, currentUser);
+                    BuyWindow buy = new BuyWindow(_buyingdProducts, _currentUser);
                     buy.ShowDialog();
                 });
-            }
-        }
 
-        public RelayCommand Btn_Journal_Click
-        {
-            get
-            {
-                return null ?? new RelayCommand(obj =>
+
+        public RelayCommand Btn_Journal_Click => new RelayCommand(obj =>
                 {
                     Journal jur = new Journal();
                     jur.ShowDialog();
                 });
-            }
-        }
 
-        public RelayCommand Btn_Minus_Click
+
+        public RelayCommand Btn_Minus_Click => new RelayCommand(obj =>
         {
-            get
+            MinusBuyingProduct();
+        });
+
+        private void MinusBuyingProduct()
+        {
+            if (_buyingdProducts.FindAll(x => x.ProductID == SelectedProduct.ProductID).Count != 0)
             {
-                return null ?? new RelayCommand(obj =>
+                SelectedProduct.BuyCount -= 1;
+                if (SelectedProduct.BuyCount <= 0)
                 {
-                    if (buyingdProducts.FindAll(x => x.ProductID == SelectedProduct.ProductID).Count != 0)
-                    {
-                        SelectedProduct.BuyCount -= 1;
-                        if (SelectedProduct.BuyCount <= 0)
-                        {
-                            buyingdProducts.Remove(SelectedProduct);
-                            selectedProductsCount -= 1;
-                        }
-                    }
-                    _ProductList = TZEntities.GetContext().Product.ToList();
-                    Invalidate();
-                });
+                    _buyingdProducts.Remove(SelectedProduct);
+                    SelectedProductsCount -= 1;
+                }
             }
+            _productList = TZEntities.GetContext().Product.ToObservable();
         }
 
         public RelayCommand Btn_Plus_Click
         {
             get
             {
-                return null ?? new RelayCommand(obj =>
+                return new RelayCommand(obj =>
                 {
                     TZEntities.GetContext().Product.ToList().Find(x => x.ProductID == SelectedProduct.ProductID).BuyCount += 1;
-                    if (buyingdProducts.FindAll(x => x.ProductID == SelectedProduct.ProductID).Count == 0)
+                    if (_buyingdProducts.FindAll(x => x.ProductID == SelectedProduct.ProductID).Count == 0)
                     {
-                        buyingdProducts.Add(SelectedProduct);
-                        selectedProductsCount += 1;
+                        _buyingdProducts.Add(SelectedProduct);
+                        SelectedProductsCount += 1;
                     }
 
-                    _ProductList = TZEntities.GetContext().Product.ToList();
-                    Invalidate();
+                    _productList = TZEntities.GetContext().Product.ToObservable(); //Refresh
                 });
             }
         }
@@ -217,16 +226,33 @@ namespace ShopTZ.ViewModel
         {
             get
             {
-                return null ?? new RelayCommand(obj =>
+                return new RelayCommand(obj =>
                 {
                     if (SearchFilter != "")
-                        ProductList = ProductList.Where(
-                            p => p.ProductName.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0);
+                        ProductList = ProductList.Where(p => p.ProductName.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0).ToObservable(); 
                     else
-                        _ProductList = TZEntities.GetContext().Product.ToList();
+                        _productList = TZEntities.GetContext().Product.ToObservable();
 
-                    Invalidate();
+                    OnPropertyChanged();
                 });
+            }
+        }
+
+        public void DeleteProduct(Product product)
+        {
+            if (MessageBox.Show($"Вы точно хотите удалить продукт?", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    TZEntities.GetContext().Product.Remove(product);
+                    TZEntities.GetContext().SaveChanges();
+                    MessageBox.Show("Данные удалены!");
+                    OnPropertyChanged();
+                }
+                catch
+                {
+                    MessageBox.Show("Произошла ошибкае");
+                }
             }
         }
     }

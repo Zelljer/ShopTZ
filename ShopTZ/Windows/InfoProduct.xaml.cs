@@ -27,7 +27,9 @@ namespace ShopTZ.Windows
         public InfoProduct(Product selectedProduct)
         {
             InitializeComponent();
-            DataContext = new InfoProductViewModel(selectedProduct);
+            var data = new InfoProductViewModel();
+            data.Init(selectedProduct);
+            DataContext = data;
         }
     }
 }

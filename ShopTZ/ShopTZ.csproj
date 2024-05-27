@@ -68,13 +68,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\AddProductModel.cs" />
-    <Compile Include="Model\BuyWindowModel.cs" />
-    <Compile Include="Model\InfoProductModel.cs" />
-    <Compile Include="Model\JournalModel.cs" />
-    <Compile Include="Model\MainWindowModel.cs" />
     <Compile Include="Model\RelayCommand.cs" />
+    <Compile Include="Utils\ToObservable.cs" />
+    <Compile Include="Utils\VisibilityConvertor.cs" />
     <Compile Include="ViewModel\AddProductViewModel.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\BuyWindowViewModel.cs" />
     <Compile Include="ViewModel\InfoProductViewModel.cs" />
     <Compile Include="ViewModel\JournalViewModel.cs" />
