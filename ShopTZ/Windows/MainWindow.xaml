@@ -51,8 +51,8 @@
         <TextBlock HorizontalAlignment="Left" Grid.Row="2" FontSize="25" Margin="10,0,0,0" TextWrapping="Wrap" Text="Выбранно товаров: " VerticalAlignment="Center"/>
         <TextBlock HorizontalAlignment="Left" Grid.Row="2" FontSize="25" Margin="240,0,0,0" TextWrapping="Wrap" Text="{Binding SelectedProductsCount}" VerticalAlignment="Center"/>
 
-        <Button x:Name="Buy_Button" Command="{Binding Btn_Journal_Click}" Content="Журнал" FontSize="15" Grid.Row="2" HorizontalAlignment="Left"  Width="88" Height="28" Margin="690,0,0,0"/>
-        <Button x:Name="Btn_Journal" Command="{Binding Buy_Button_Click}" Content="Рассчитать" FontSize="15" Grid.Row="2" HorizontalAlignment="Left"   Width="88" Height="28" Margin="599,0,0,0" Visibility="{Binding isBuyButton, Converter={StaticResource boolToVisibilityConverter}}"/>
+        <Button x:Name="Btn_Journal" Command="{Binding Btn_Journal_Click}" Content="Журнал" FontSize="15" Grid.Row="2" HorizontalAlignment="Left"  Width="88" Height="28" Margin="690,0,0,0"/>
+        <Button x:Name="Buy_Button" Command="{Binding Buy_Button_Click}" Content="Рассчитать" FontSize="15" Grid.Row="2" HorizontalAlignment="Left"   Width="88" Height="28" Margin="599,0,0,0" Visibility="{Binding isBuyButton, Converter={StaticResource boolToVisibilityConverter}}"/>
 
         <Button x:Name="Info_Button" Command="{Binding infoButton_Click}" Content="Информация" Visibility="{Binding isUpperButton, Converter={StaticResource boolToVisibilityConverter}}" FontSize="10" Height="20" Width="80" Margin="165,15,530,15"/>
         <Button x:Name="Edit_Button" Command="{Binding Edit_Button_Click}" Content="Редактировать" Visibility="{Binding isUpperButton, Converter={StaticResource boolToVisibilityConverter}}" FontSize="10" Height="20" Width="80" Margin="250,15,430,15"/>

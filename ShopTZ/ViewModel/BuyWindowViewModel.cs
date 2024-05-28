@@ -10,7 +10,7 @@ namespace ShopTZ.ViewModel
 {
     public class BuyWindowViewModel : BaseViewModel
     {
-        private List<Product> _listProducts { get; set; }
+        
         private User _buyerUser { get; set; }
 
         public BuyWindowViewModel(List<Product> products, User buyer)
@@ -45,7 +45,12 @@ namespace ShopTZ.ViewModel
 
         }
 
-
+        private List<Product> _listProducts { get; set; }
+        public List<Product> ListProducts
+        {
+            get => _listProducts;
+            set { _listProducts = value; OnPropertyChanged(); }
+        }
         /*
         public decimal finCost
         {
@@ -89,21 +94,26 @@ namespace ShopTZ.ViewModel
         }
         */
 
-        public decimal userCash => _buyerUser.UserMoney - FinaleCost;        
+        public decimal UserCash => _buyerUser.UserMoney - FinaleCost;        
 
         public RelayCommand BuyButton_Click => new RelayCommand(obj =>
-                {
-                    Buy(_buyerUser, FinaleCost, FinaleNames);
-                });
+        {
+            Buy(_buyerUser, FinaleCost, FinaleNames);
+        });
 
-            private void SetListIdAndBuyCost(List<Product> products)
+        private void SetListIdAndBuyCost(List<Product> products)
+        {
+
+            foreach (Product product in products)
             {
-                foreach (Product product in products)
-                {
-                    product.BuyListId = products.IndexOf(product) + 1;
-                    product.BuyCost = product.BuyCount * product.ProductCost;
-                }
+                product.BuyListId = products.IndexOf(product) + 1;
+                product.BuyCost = product.BuyCount * product.ProductCost;
+                FinaleCost += product.BuyCost;
+                FinaleCount += product.BuyCount;
+
             }
+            FinaleNames = string.Join(",", products.Select(x => x.ProductName));
+        }
 
             private void Buy(User Buyer, decimal FinaleCost, string FinaleNames)
             {

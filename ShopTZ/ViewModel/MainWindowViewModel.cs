@@ -17,19 +17,18 @@ namespace ShopTZ.ViewModel
 
         public MainWindowViewModel()
         {
-            _productList = TZEntities.GetContext().Product.ToObservable();
             _currentUser = TZEntities.GetContext().User.ToList()[0];
             _SelectedProduct = new Product();
             _searchFilter = "";
-    }
+            UpdatePosition();
+        }
 
         private User _currentUser { get; set; }
         private List<Product> _buyingdProducts = new List<Product>();
-        private bool _isSelected = false;
 
         public decimal UserBalance
         {
-            get => _currentUser.UserMoney; 
+            get => _currentUser.UserMoney;
             set
             {
                 _currentUser.UserMoney = value;
@@ -44,8 +43,7 @@ namespace ShopTZ.ViewModel
             set
             {
                 _SelectedProduct = value;
-                if (_SelectedProduct != null)
-                    _isSelected = true;
+                isUpperButton = value != null;
                 OnPropertyChanged();
             }
         }
@@ -56,8 +54,7 @@ namespace ShopTZ.ViewModel
             get => _selectedProductsCount; 
             set
             {
-                if (value >= 0)
-                    _selectedProductsCount = value;
+                _selectedProductsCount = value;
                 OnPropertyChanged();
             }
         }
@@ -133,18 +130,10 @@ namespace ShopTZ.ViewModel
             }
         }
 
-
-
-
-
-
-
-
-
         public RelayCommand Delete_Button_Click => new RelayCommand(obj =>
                 {
                     DeleteProduct(SelectedProduct);
-                    OnPropertyChanged();
+                    UpdatePosition();
                 });
             
         
@@ -153,6 +142,7 @@ namespace ShopTZ.ViewModel
                 {
                     InfoProduct info = new InfoProduct(SelectedProduct);
                     info.ShowDialog();
+                    UpdatePosition();
                 });
 
 
@@ -160,7 +150,7 @@ namespace ShopTZ.ViewModel
                 {
                     AddProduct addproduct = new AddProduct(null);
                     addproduct.ShowDialog();
-                    OnPropertyChanged();
+                    UpdatePosition();
                 });
 
 
@@ -168,6 +158,7 @@ namespace ShopTZ.ViewModel
                 {
                     AddProduct addproduct = new AddProduct(SelectedProduct);
                     addproduct.ShowDialog();
+                    UpdatePosition();
                 });
 
 
@@ -200,8 +191,10 @@ namespace ShopTZ.ViewModel
                     _buyingdProducts.Remove(SelectedProduct);
                     SelectedProductsCount -= 1;
                 }
+                if (SelectedProductsCount == 0)
+                    isBuyButton = false;
             }
-            _productList = TZEntities.GetContext().Product.ToObservable();
+            UpdatePosition();
         }
 
         public RelayCommand Btn_Plus_Click
@@ -215,9 +208,10 @@ namespace ShopTZ.ViewModel
                     {
                         _buyingdProducts.Add(SelectedProduct);
                         SelectedProductsCount += 1;
+                        isBuyButton = true;
                     }
 
-                    _productList = TZEntities.GetContext().Product.ToObservable(); //Refresh
+                    UpdatePosition();
                 });
             }
         }
@@ -231,7 +225,7 @@ namespace ShopTZ.ViewModel
                     if (SearchFilter != "")
                         ProductList = ProductList.Where(p => p.ProductName.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0).ToObservable(); 
                     else
-                        _productList = TZEntities.GetContext().Product.ToObservable();
+                        UpdatePosition();
 
                     OnPropertyChanged();
                 });
@@ -254,6 +248,11 @@ namespace ShopTZ.ViewModel
                     MessageBox.Show("Произошла ошибкае");
                 }
             }
+        }
+
+        private void UpdatePosition()
+        {
+            ProductList = TZEntities.GetContext().Product.ToObservable();
         }
     }
 }

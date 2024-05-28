@@ -12,9 +12,12 @@ namespace ShopTZ.ViewModel
     public class JournalViewModel : BaseViewModel
     {
 
+        private ObservableCollection<Receipt> _bufferCollection;
+
         public JournalViewModel() 
         {
             _receiptList = TZEntities.GetContext().Receipt.ToObservable();
+            _bufferCollection = new ObservableCollection<Receipt>(_receiptList);
         }
 
         private int _selectedIndex;
@@ -24,6 +27,7 @@ namespace ShopTZ.ViewModel
             set
             {
                 _selectedIndex = value;
+                Filtration();
                 OnPropertyChanged();
             }
         }
@@ -42,12 +46,7 @@ namespace ShopTZ.ViewModel
         private ObservableCollection<Receipt> _receiptList;
         public ObservableCollection<Receipt> ReceiptList
         {
-            get
-            {
-                var Result = _receiptList;
-
-                return Filtration(ref Result);
-            }
+            get => _receiptList;
             set
             {
                 _receiptList = value;
@@ -55,31 +54,33 @@ namespace ShopTZ.ViewModel
             }
         }
 
-        private ObservableCollection<Receipt> Filtration(ref ObservableCollection<Receipt> Result)
+        private void Filtration()
         {
+            
+            var result = new ObservableCollection<Receipt>(_bufferCollection);
             switch (SelectedIndex)
             {
                 case 1:
-                    Result = Result.Where(p => p.ReceiptRDate.Date == DateTime.Today.Date).ToObservable();
+                    result = result.Where(p => p.ReceiptRDate.Date == DateTime.Today.Date).ToObservable();
                     break;
                 case 2:
-                    Result = Result.Where(p => p.ReceiptRDate.Date == DateTime.Now.AddDays(-1).Date).ToObservable(); ;
+                    result = result.Where(p => p.ReceiptRDate.Date == DateTime.Now.AddDays(-1).Date).ToObservable(); ;
                     break;
                 case 3:
-                    Result = Result.Where(p => p.ReceiptRDate.Date >= DateTime.Now.AddDays(-3).Date).ToObservable();
+                    result = result.Where(p => p.ReceiptRDate.Date >= DateTime.Now.AddDays(-3).Date).ToObservable();
                     break;
                 case 4:
-                    Result = Result.Where(p => p.ReceiptRDate.Date >= DateTime.Now.AddMonths(-1).Date).ToObservable();
+                    result = result.Where(p => p.ReceiptRDate.Date >= DateTime.Now.AddMonths(-1).Date).ToObservable();
                     break;
                 case 5:
-                    Result = Result.Where(p => p.ReceiptRDate.Date >= DateTime.Now.AddMonths(-3).Date).ToObservable();
+                    result = result.Where(p => p.ReceiptRDate.Date >= DateTime.Now.AddMonths(-3).Date).ToObservable();
                     break;
                 case 6:
-                    Result = Result.Where(p => p.ReceiptRDate.Date <= DateTime.Now.AddYears(-1).Date).ToObservable();
+                    result = result.Where(p => p.ReceiptRDate.Date <= DateTime.Now.AddYears(-1).Date).ToObservable();
                     break;
             }
 
-            return Result;
+            ReceiptList = result;
         }
     }
 }
