@@ -14,12 +14,12 @@ namespace ShopTZ.ViewModel
         public MainWindowViewModel()
         {
             _currentUser = TZEntities.GetContext().User.ToList()[0];
-            _SelectedProduct = new Product();
+            _selectedProduct = new Product();
             _searchFilter = "";
-            UpdatePosition();
+            RefreshData();
         }
 
-        private User _currentUser { get; set; }
+        private User _currentUser;
         private List<Product> _buyingdProducts = new List<Product>();
 
         public decimal UserBalance
@@ -32,13 +32,13 @@ namespace ShopTZ.ViewModel
             }
         }
 
-        private Product _SelectedProduct;
+        private Product _selectedProduct;
         public Product SelectedProduct
         {
-            get => _SelectedProduct; 
+            get => _selectedProduct; 
             set
             {
-                _SelectedProduct = value;
+                _selectedProduct = value;
                 isUpperButton = value != null;
                 OnPropertyChanged();
             }
@@ -84,7 +84,6 @@ namespace ShopTZ.ViewModel
             set
             { 
                 _isBuyButton = value;
-                //_isBuyButton = selectedProductsCount > 0;
                 OnPropertyChanged();
             }
         }
@@ -96,7 +95,6 @@ namespace ShopTZ.ViewModel
             set
             {
                 _isUpperButton = value;
-                //_isUpperButton = selectedProductsCount > 0;
                 OnPropertyChanged();
             }
         }
@@ -104,7 +102,7 @@ namespace ShopTZ.ViewModel
         public RelayCommand Delete_Button_Click => new RelayCommand(obj =>
         {
             DeleteProduct(SelectedProduct);
-            UpdatePosition();
+            RefreshData();
         });
             
         public RelayCommand infoButton_Click => new RelayCommand(obj =>
@@ -117,21 +115,21 @@ namespace ShopTZ.ViewModel
         {
             AddProduct addproduct = new AddProduct(null);
             addproduct.ShowDialog();
-            UpdatePosition();
+            RefreshData();
         });
 
         public RelayCommand Edit_Button_Click =>  new RelayCommand(obj =>
         {
             AddProduct addproduct = new AddProduct(SelectedProduct);
             addproduct.ShowDialog();
-            UpdatePosition();
+            RefreshData();
         });
 
         public RelayCommand Buy_Button_Click => new RelayCommand(obj =>
         {
             BuyWindow buy = new BuyWindow(_buyingdProducts, _currentUser);
             buy.ShowDialog();
-            UpdatePosition();
+            RefreshData();
         });
 
         public RelayCommand Btn_Journal_Click => new RelayCommand(obj =>
@@ -158,7 +156,7 @@ namespace ShopTZ.ViewModel
                 if (SelectedProductsCount == 0)
                     isBuyButton = false;
             }
-            UpdatePosition();
+            RefreshData();
         }
 
         public RelayCommand Btn_Plus_Click
@@ -167,15 +165,14 @@ namespace ShopTZ.ViewModel
             {
                 return new RelayCommand(obj =>
                 {
-                    TZEntities.GetContext().Product.ToList().Find(x => x.ProductID == SelectedProduct.ProductID).BuyCount += 1;
+                    SelectedProduct.BuyCount += 1;
                     if (_buyingdProducts.FindAll(x => x.ProductID == SelectedProduct.ProductID).Count == 0)
                     {
                         _buyingdProducts.Add(SelectedProduct);
                         SelectedProductsCount += 1;
                         isBuyButton = true;
                     }
-
-                    UpdatePosition();
+                    RefreshData();
                 });
             }
         }
@@ -189,7 +186,7 @@ namespace ShopTZ.ViewModel
                     if (SearchFilter != "")
                         ProductList = ProductList.Where(p => p.ProductName.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0).ToObservable(); 
                     else
-                        UpdatePosition();
+                        RefreshData();
 
                     OnPropertyChanged();
                 });
@@ -214,9 +211,10 @@ namespace ShopTZ.ViewModel
             }
         }
 
-        private void UpdatePosition()
+        private void RefreshData()
         {
             ProductList = TZEntities.GetContext().Product.ToObservable();
+            UserBalance = _currentUser.UserMoney;
         }
     }
 }

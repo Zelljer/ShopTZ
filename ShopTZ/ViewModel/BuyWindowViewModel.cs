@@ -82,7 +82,7 @@ namespace ShopTZ.ViewModel
                         ReceiptSumm = FinaleCost,
                         ReceiptProducts = FinaleNames
                     });
-                    Buyer.UserMoney -= FinaleCost;
+                    TZEntities.GetContext().User.ToList().Find(x => x.UserID == Buyer.UserID).UserMoney -= FinaleCost;
                     TZEntities.GetContext().SaveChanges();
                     MessageBox.Show("Покупка прошла успешно");
                 }

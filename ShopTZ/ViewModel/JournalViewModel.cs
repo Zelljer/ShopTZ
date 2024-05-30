@@ -1,11 +1,8 @@
 ﻿using ShopTZ.Model;
 using ShopTZ.Utils;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShopTZ.ViewModel
 {
@@ -33,13 +30,13 @@ namespace ShopTZ.ViewModel
 
         public string[] FiltrList { get; set; } =
         {
-                "Без фильтрации",
-                "За сегодня",
-                "За вчера",
-                "За 3 дня",
-                "За месяц",
-                "За 3 месяца",
-                "Ранее",
+            "Без фильтрации",
+            "За сегодня",
+            "За вчера",
+            "За 3 дня",
+            "За месяц",
+            "За 3 месяца",
+            "Ранее",
         };
 
         private ObservableCollection<Receipt> _receiptList;
