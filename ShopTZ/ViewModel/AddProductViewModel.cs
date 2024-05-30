@@ -1,9 +1,5 @@
 ﻿using ShopTZ.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ShopTZ.ViewModel
@@ -25,26 +21,31 @@ namespace ShopTZ.ViewModel
             get => _currentproduct.ProductID; 
             set { _currentproduct.ProductID = value; OnPropertyChanged(); }
         }
+
         public string Name
         {
             get => _currentproduct.ProductName; 
             set { _currentproduct.ProductName = value; OnPropertyChanged(); }
         }
+
         public string Unit
         {
             get => _currentproduct.ProductUnit; 
             set { _currentproduct.ProductUnit = value; OnPropertyChanged(); }
         }
+
         public int Quantity
         {
             get => _currentproduct.ProductQuantity; 
             set { _currentproduct.ProductQuantity = value; OnPropertyChanged(); }
         }
+
         public decimal Cost
         {
             get => _currentproduct.ProductCost; 
             set { _currentproduct.ProductCost = value; OnPropertyChanged(); }
         }
+
         public decimal SummForProduction
         {
             get => _currentproduct.ProductSummForProduction; 

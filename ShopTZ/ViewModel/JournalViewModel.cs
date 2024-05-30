@@ -11,7 +11,6 @@ namespace ShopTZ.ViewModel
 {
     public class JournalViewModel : BaseViewModel
     {
-
         private ObservableCollection<Receipt> _bufferCollection;
 
         public JournalViewModel() 
@@ -56,7 +55,6 @@ namespace ShopTZ.ViewModel
 
         private void Filtration()
         {
-            
             var result = new ObservableCollection<Receipt>(_bufferCollection);
             switch (SelectedIndex)
             {
@@ -79,7 +77,6 @@ namespace ShopTZ.ViewModel
                     result = result.Where(p => p.ReceiptRDate.Date <= DateTime.Now.AddYears(-1).Date).ToObservable();
                     break;
             }
-
             ReceiptList = result;
         }
     }

@@ -9,7 +9,6 @@ namespace ShopTZ.ViewModel
 
         public virtual void OnPropertyChanged([CallerMemberName] string naem = "")
         {
-
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(naem));
         }
     }

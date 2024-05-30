@@ -5,16 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace ShopTZ.ViewModel
 {
     public class MainWindowViewModel : BaseViewModel
     {
-
         public MainWindowViewModel()
         {
             _currentUser = TZEntities.GetContext().User.ToList()[0];
@@ -59,7 +55,6 @@ namespace ShopTZ.ViewModel
             }
         }
 
-
         private ObservableCollection<Product> _productList;
         public ObservableCollection<Product> ProductList
         {
@@ -81,30 +76,6 @@ namespace ShopTZ.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        /*
-        public string BuyButtonVisible
-        {
-            get
-            {
-                if (selectedProductsCount > 0) return "Visible";
-                return "Collapsed";
-            }
-            set
-            { OnPropertyChanged(); }
-        }
-
-        public string UpperButtonVisible
-        {
-            get
-            {
-                if (isselected) return "Visible";
-                return "Collapsed";
-            }
-            set
-            { OnPropertyChanged(); }
-        }*/
-
 
         private bool _isBuyButton;
         public bool isBuyButton 
@@ -131,50 +102,43 @@ namespace ShopTZ.ViewModel
         }
 
         public RelayCommand Delete_Button_Click => new RelayCommand(obj =>
-                {
-                    DeleteProduct(SelectedProduct);
-                    UpdatePosition();
-                });
+        {
+            DeleteProduct(SelectedProduct);
+            UpdatePosition();
+        });
             
-        
-
         public RelayCommand infoButton_Click => new RelayCommand(obj =>
-                {
-                    InfoProduct info = new InfoProduct(SelectedProduct);
-                    info.ShowDialog();
-                    UpdatePosition();
-                });
-
+        {
+            InfoProduct info = new InfoProduct(SelectedProduct);
+            info.ShowDialog();
+        });
 
         public RelayCommand Add_Button_Click =>  new RelayCommand(obj =>
-                {
-                    AddProduct addproduct = new AddProduct(null);
-                    addproduct.ShowDialog();
-                    UpdatePosition();
-                });
-
+        {
+            AddProduct addproduct = new AddProduct(null);
+            addproduct.ShowDialog();
+            UpdatePosition();
+        });
 
         public RelayCommand Edit_Button_Click =>  new RelayCommand(obj =>
-                {
-                    AddProduct addproduct = new AddProduct(SelectedProduct);
-                    addproduct.ShowDialog();
-                    UpdatePosition();
-                });
-
+        {
+            AddProduct addproduct = new AddProduct(SelectedProduct);
+            addproduct.ShowDialog();
+            UpdatePosition();
+        });
 
         public RelayCommand Buy_Button_Click => new RelayCommand(obj =>
-                {
-                    BuyWindow buy = new BuyWindow(_buyingdProducts, _currentUser);
-                    buy.ShowDialog();
-                });
-
+        {
+            BuyWindow buy = new BuyWindow(_buyingdProducts, _currentUser);
+            buy.ShowDialog();
+            UpdatePosition();
+        });
 
         public RelayCommand Btn_Journal_Click => new RelayCommand(obj =>
-                {
-                    Journal jur = new Journal();
-                    jur.ShowDialog();
-                });
-
+        {
+            Journal jur = new Journal();
+            jur.ShowDialog();
+        });
 
         public RelayCommand Btn_Minus_Click => new RelayCommand(obj =>
         {
