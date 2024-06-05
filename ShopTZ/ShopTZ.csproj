@@ -8,12 +8,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>ShopTZ</RootNamespace>
     <AssemblyName>ShopTZ</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -68,13 +69,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\AddProductModel.cs" />
-    <Compile Include="Model\BuyWindowModel.cs" />
-    <Compile Include="Model\InfoProductModel.cs" />
-    <Compile Include="Model\JournalModel.cs" />
-    <Compile Include="Model\MainWindowModel.cs" />
     <Compile Include="Model\RelayCommand.cs" />
+    <Compile Include="Utils\ToObservable.cs" />
+    <Compile Include="Utils\VisibilityConvertor.cs" />
     <Compile Include="ViewModel\AddProductViewModel.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\BuyWindowViewModel.cs" />
     <Compile Include="ViewModel\InfoProductViewModel.cs" />
     <Compile Include="ViewModel\JournalViewModel.cs" />

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShopTZ.Windows"
         mc:Ignorable="d"
-        Title="BuyWindow" Height="500" Width="450">
+        Title="BuyWindow" Height="500" Width="450" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -18,40 +18,37 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-
-        <TextBlock FontSize="30" Margin="10,0,0,0">Корзина:</TextBlock>
-
-        <DataGrid Grid.Row="1" HorizontalAlignment="Center" x:Name="DGrid" AutoGenerateColumns="False" IsReadOnly="True" Width="400" ItemsSource="{Binding ListProducts}">
+        <TextBlock Style="{StaticResource CartNameTextBlock}">Корзина:</TextBlock>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding ListProducts}" Style="{StaticResource CartDataGrid}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№" Binding="{Binding BuyListId}" Width="35" FontFamily="TW Cen MT"></DataGridTextColumn>
-                <DataGridTextColumn Header="Наименование" Binding="{Binding ProductName}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
-                <DataGridTextColumn Header="Кол-во" Binding="{Binding BuyCount}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
-                <DataGridTextColumn Header="Цена за ед." Binding="{Binding ProductCost}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
-                <DataGridTextColumn Header="Цена" Binding="{Binding BuyCost}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
+                <DataGridTextColumn Header="№" Binding="{Binding BuyListId}" Width="35"/>
+                <DataGridTextColumn Header="Наименование" Binding="{Binding ProductName}" Width="*" />
+                <DataGridTextColumn Header="Кол-во" Binding="{Binding BuyCount}" Width="*" />
+                <DataGridTextColumn Header="Цена за ед." Binding="{Binding ProductCost}" Width="*"/>
+                <DataGridTextColumn Header="Цена" Binding="{Binding BuyCost}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
-        <WrapPanel Grid.Row="2" HorizontalAlignment="Center" Width="400" >
-            <TextBlock  FontSize="15" Text="Итог: "  />
-            <TextBlock  FontSize="15" Text="{Binding finCost}" />
+        <WrapPanel Grid.Row="2" Style="{StaticResource DeffaultWrapPanel}">
+            <TextBlock Style="{StaticResource DeffaultTextBlock}" Text="Итог: "/>
+            <TextBlock Style="{StaticResource DeffaultTextBlock}" Text="{Binding FinaleCost}" />
         </WrapPanel>
-        <WrapPanel Grid.Row="3">
-            <TextBlock  FontSize="15" Text="Кол-во товаров к покупке: " Margin="10,0,0,0"/>
-            <TextBlock FontSize="15" Text="{Binding finCount}"/>
+        <WrapPanel Grid.Row="3" Style="{StaticResource DeffaultWrapPanel}">
+            <TextBlock Style="{StaticResource DeffaultTextBlock}" Text="Кол-во товаров к покупке: " />
+            <TextBlock Style="{StaticResource DeffaultTextBlock}" Text="{Binding FinaleCount}"/>
         </WrapPanel>
-        <WrapPanel Grid.Row="4">
-            <TextBlock   FontSize="15" Text="Сумма к оплате: "  Margin="10,0,0,0"/>
-            <TextBlock FontSize="15" Text="{Binding finCost}"/>
+        <WrapPanel Grid.Row="4" Style="{StaticResource DeffaultWrapPanel}">
+            <TextBlock Style="{StaticResource DeffaultTextBlock}" Text="Сумма к оплате: "  />
+            <TextBlock Style="{StaticResource DeffaultTextBlock}" Text="{Binding FinaleCost}"/>
         </WrapPanel>
-        <WrapPanel Grid.Row="5">
-            <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Text="Покупаемые продукты: " Height="30" Margin="10,0,0,0"/>
-            <TextBlock FontSize="15" Text="{Binding finNames}" TextWrapping="Wrap" Margin="10,0,0,0"/>
+        <WrapPanel Grid.Row="5" Style="{StaticResource DeffaultWrapPanel}">
+            <TextBlock Style="{StaticResource DeffaultTextBlock}" Text="Покупаемые продукты: "/>
+            <TextBlock Text="{Binding FinaleNames}" Style="{StaticResource WrappingDeffaultTextBlock}"/>
         </WrapPanel>
-        <WrapPanel Grid.Row="6">
-            <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" Text="Сдача: " Height="30" Margin="10,0,0,0"/>
-            <TextBlock FontSize="15" Text="{Binding userCash}" />
+        <WrapPanel Grid.Row="6" Style="{StaticResource DeffaultWrapPanel}">
+            <TextBlock Style="{StaticResource DeffaultTextBlock}" Text="Сдача: " />
+            <TextBlock Style="{StaticResource DeffaultTextBlock}" Text="{Binding UserCash}" />
         </WrapPanel>
-
-        <Button x:Name="BuyButton" Command="{Binding BuyButton_Click}" Grid.Row="8" Width="125"  Content="Оплатить"/>
+        <Button Command="{Binding BuyButton_Click}" Grid.Row="8" Style="{StaticResource CenterWindowButton}" Content="Оплатить"/>
     </Grid>
 </Window>
 

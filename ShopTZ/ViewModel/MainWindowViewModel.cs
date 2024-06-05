@@ -1,212 +1,178 @@
 ﻿using ShopTZ.Model;
+using ShopTZ.Utils;
 using ShopTZ.Windows;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+using System.Windows;
 
 namespace ShopTZ.ViewModel
 {
-    public class MainWindowViewModel : MainWindowModel
+    public class MainWindowViewModel : BaseViewModel
     {
-        public User currentUser = TZEntities.GetContext().User.ToList()[0];
-        public decimal userBalance
+        public MainWindowViewModel()
         {
-            get { return currentUser.UserMoney; }
+            _currentUser = TZEntities.GetContext().User.ToList()[0];
+            _selectedProduct = new Product();
+            _searchFilter = "";
+            RefreshData();
+        }
+
+        private User _currentUser;
+        private List<Product> _buyingdProducts = new List<Product>();
+
+        public decimal UserBalance
+        {
+            get => _currentUser.UserMoney;
             set
             {
-                currentUser.UserMoney = value;
-                Invalidate();
+                _currentUser.UserMoney = value;
+                OnPropertyChanged();
             }
         }
 
-        public List<Product> buyingdProducts = new List<Product>();
-
-        public Product _SelectedProduct = new Product();
+        private Product _selectedProduct;
         public Product SelectedProduct
         {
-            get { return _SelectedProduct; }
+            get => _selectedProduct; 
             set
             {
-                _SelectedProduct = value;
-                if (_SelectedProduct != null)
-                    isselected = true;
-                Invalidate();
+                _selectedProduct = value;
+                isUpperButton = value != null;
+                OnPropertyChanged();
             }
         }
-
-        public int _selectedProductsCount = 0;
-        public int selectedProductsCount 
+       
+        private int _selectedProductsCount;
+        public int SelectedProductsCount 
         { 
-            get
-            {
-                return _selectedProductsCount;
-            }
+            get => _selectedProductsCount; 
             set
             {
-                if (value >= 0)
-                    _selectedProductsCount = value;
-                Invalidate();
+                _selectedProductsCount = value;
+                OnPropertyChanged();
             }
         }
-        public bool isselected = false;
 
-        public IEnumerable<Product> _ProductList = TZEntities.GetContext().Product.ToList();
-        public IEnumerable<Product> ProductList
+        private ObservableCollection<Product> _productList;
+        public ObservableCollection<Product> ProductList
         {
-            get
-            {
-                return _ProductList;
-            }
+            get => _productList;
             set
             {
-                _ProductList = value;
-                Invalidate();
+                _productList = value;
+                OnPropertyChanged();
             }
         }
 
-        public string _SearchFilter = "";
+        private string _searchFilter;
         public string SearchFilter
         {
-            get { return _SearchFilter; }
+            get => _searchFilter; 
             set
             {
-                _SearchFilter = value;
-                Invalidate();
+                _searchFilter = value;
+                OnPropertyChanged();
             }
         }
 
-        public string BuyButtonVisible
-        {
-            get
-            {
-                if (selectedProductsCount > 0) return "Visible";
-                return "Collapsed";
-            }
+        private bool _isBuyButton;
+        public bool isBuyButton 
+        { 
+            get =>  _isBuyButton;
             set
-            { Invalidate(); }
+            { 
+                _isBuyButton = value;
+                OnPropertyChanged();
+            }
         }
 
-        public string UpperButtonVisible
+        private bool _isUpperButton;
+        public bool isUpperButton
         {
-            get
-            {
-                if (isselected) return "Visible";
-                return "Collapsed";
-            }
+            get => _isUpperButton;
             set
-            { Invalidate(); }
-        }
-
-        public RelayCommand Delete_Button_Click
-        {
-            get
             {
-                return null ?? new RelayCommand(obj =>
-                {
-                    DeleteProduct(SelectedProduct);
-                });
+                _isUpperButton = value;
+                OnPropertyChanged();
             }
         }
 
-        public RelayCommand infoButton_Click
+        public RelayCommand Delete_Button_Click => new RelayCommand(obj =>
         {
-            get
-            {
-                return null ?? new RelayCommand(obj =>
-                {
-                    InfoProduct info = new InfoProduct(SelectedProduct);
-                    info.ShowDialog();
-                });
-            }
-        }
+            DeleteProduct(SelectedProduct);
+            RefreshData();
+        });
+            
+        public RelayCommand infoButton_Click => new RelayCommand(obj =>
+        {
+            InfoProduct info = new InfoProduct(SelectedProduct);
+            info.ShowDialog();
+        });
 
-        public RelayCommand Add_Button_Click
+        public RelayCommand Add_Button_Click =>  new RelayCommand(obj =>
         {
-            get
-            {
-                return null ?? new RelayCommand(obj =>
-                {
-                    AddProduct addproduct = new AddProduct(null);
-                    addproduct.ShowDialog();
-                });
-            }
-        }
+            AddProduct addproduct = new AddProduct(null);
+            addproduct.ShowDialog();
+            RefreshData();
+        });
 
-        public RelayCommand Edit_Button_Click
+        public RelayCommand Edit_Button_Click =>  new RelayCommand(obj =>
         {
-            get
-            {
-                return null ?? new RelayCommand(obj =>
-                {
-                    AddProduct addproduct = new AddProduct(SelectedProduct);
-                    addproduct.ShowDialog();
-                });
-            }
-        }
+            AddProduct addproduct = new AddProduct(SelectedProduct);
+            addproduct.ShowDialog();
+            RefreshData();
+        });
 
-        public RelayCommand Buy_Button_Click
+        public RelayCommand Buy_Button_Click => new RelayCommand(obj =>
         {
-            get
-            {
-                return null ?? new RelayCommand(obj =>
-                {
-                    BuyWindow buy = new BuyWindow(buyingdProducts, currentUser);
-                    buy.ShowDialog();
-                });
-            }
-        }
+            BuyWindow buy = new BuyWindow(_buyingdProducts, _currentUser);
+            buy.ShowDialog();
+            RefreshData();
+        });
 
-        public RelayCommand Btn_Journal_Click
+        public RelayCommand Btn_Journal_Click => new RelayCommand(obj =>
         {
-            get
-            {
-                return null ?? new RelayCommand(obj =>
-                {
-                    Journal jur = new Journal();
-                    jur.ShowDialog();
-                });
-            }
-        }
+            Journal jur = new Journal();
+            jur.ShowDialog();
+        });
 
-        public RelayCommand Btn_Minus_Click
+        public RelayCommand Btn_Minus_Click => new RelayCommand(obj =>
         {
-            get
+            MinusBuyingProduct();
+        });
+
+        private void MinusBuyingProduct()
+        {
+            if (_buyingdProducts.FindAll(x => x.ProductID == SelectedProduct.ProductID).Count != 0)
             {
-                return null ?? new RelayCommand(obj =>
+                SelectedProduct.BuyCount -= 1;
+                if (SelectedProduct.BuyCount <= 0)
                 {
-                    if (buyingdProducts.FindAll(x => x.ProductID == SelectedProduct.ProductID).Count != 0)
-                    {
-                        SelectedProduct.BuyCount -= 1;
-                        if (SelectedProduct.BuyCount <= 0)
-                        {
-                            buyingdProducts.Remove(SelectedProduct);
-                            selectedProductsCount -= 1;
-                        }
-                    }
-                    _ProductList = TZEntities.GetContext().Product.ToList();
-                    Invalidate();
-                });
+                    _buyingdProducts.Remove(SelectedProduct);
+                    SelectedProductsCount -= 1;
+                }
+                if (SelectedProductsCount == 0)
+                    isBuyButton = false;
             }
+            RefreshData();
         }
 
         public RelayCommand Btn_Plus_Click
         {
             get
             {
-                return null ?? new RelayCommand(obj =>
+                return new RelayCommand(obj =>
                 {
-                    TZEntities.GetContext().Product.ToList().Find(x => x.ProductID == SelectedProduct.ProductID).BuyCount += 1;
-                    if (buyingdProducts.FindAll(x => x.ProductID == SelectedProduct.ProductID).Count == 0)
+                    SelectedProduct.BuyCount += 1;
+                    if (_buyingdProducts.FindAll(x => x.ProductID == SelectedProduct.ProductID).Count == 0)
                     {
-                        buyingdProducts.Add(SelectedProduct);
-                        selectedProductsCount += 1;
+                        _buyingdProducts.Add(SelectedProduct);
+                        SelectedProductsCount += 1;
+                        isBuyButton = true;
                     }
-
-                    _ProductList = TZEntities.GetContext().Product.ToList();
-                    Invalidate();
+                    RefreshData();
                 });
             }
         }
@@ -215,17 +181,40 @@ namespace ShopTZ.ViewModel
         {
             get
             {
-                return null ?? new RelayCommand(obj =>
+                return new RelayCommand(obj =>
                 {
                     if (SearchFilter != "")
-                        ProductList = ProductList.Where(
-                            p => p.ProductName.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0);
+                        ProductList = ProductList.Where(p => p.ProductName.IndexOf(SearchFilter, StringComparison.OrdinalIgnoreCase) >= 0).ToObservable(); 
                     else
-                        _ProductList = TZEntities.GetContext().Product.ToList();
+                        RefreshData();
 
-                    Invalidate();
+                    OnPropertyChanged();
                 });
             }
+        }
+
+        public void DeleteProduct(Product product)
+        {
+            if (MessageBox.Show($"Вы точно хотите удалить продукт?", "Внимание", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    TZEntities.GetContext().Product.Remove(product);
+                    TZEntities.GetContext().SaveChanges();
+                    MessageBox.Show("Данные удалены!");
+                    OnPropertyChanged();
+                }
+                catch
+                {
+                    MessageBox.Show("Произошла ошибкае");
+                }
+            }
+        }
+
+        private void RefreshData()
+        {
+            ProductList = TZEntities.GetContext().Product.ToObservable();
+            UserBalance = _currentUser.UserMoney;
         }
     }
 }
