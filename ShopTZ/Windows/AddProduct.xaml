@@ -5,13 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShopTZ"
         mc:Ignorable="d"
-        Title="AddProduct" Height="239" Width="523">
+        Title="AddProduct" Height="239" Width="523" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300*"/>
             <ColumnDefinition Width="600*"/>
         </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -34,23 +33,17 @@
             <Label Content="ID:"/>
             <Label Content="{Binding ID}"/>
         </StackPanel>
-
-        <TextBlock Text="Название" HorizontalAlignment="Center" FontSize="13" Grid.Row="1"/>
-        <TextBox Height="25" Width="150" Grid.Column="1"  HorizontalAlignment="Left" Grid.Row="1" Text="{Binding Name}"/>
-
-        <TextBlock Text="Ед. изменения"  HorizontalAlignment="Center" FontSize="13" Grid.Row="2"/>
-        <TextBox Height="25" Width="150" Grid.Column="1"  HorizontalAlignment="Left" Grid.Row="2" Text="{Binding Unit}"/>
-
-        <TextBlock Text="Количество" HorizontalAlignment="Center" FontSize="13" Grid.Row="4"/>
-        <TextBox Height="25" Width="150" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="4" Text="{Binding Quantity}"/>
-
-        <TextBlock Text="Цена" HorizontalAlignment="Center" FontSize="13" Grid.Row="12"/>
-        <TextBox Height="25" Width="150" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="12" Text="{Binding Cost}"/>
-
-        <TextBlock Text="Сумма для произвадства" HorizontalAlignment="Center" FontSize="13" Grid.Row="14"/>
-        <TextBox Height="25" Width="150" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="14" Text="{Binding SummForProduction}"/>
-
-        <Button x:Name="BtnSave" Command="{Binding BtnSaveClick}" Grid.Row="15" Grid.Column="1" Width="150" Content="Сохранить" HorizontalAlignment="Left"/>
+        <TextBlock Text="Название" Style="{StaticResource DeffaultTextBlock2}" Grid.Row="1"/>
+        <TextBox Style="{StaticResource DeffaultTextBox}" Grid.Column="1" Grid.Row="1" Text="{Binding Name}"/>
+        <TextBlock Text="Ед. изменения"  Style="{StaticResource DeffaultTextBlock2}" Grid.Row="2"/>
+        <TextBox Style="{StaticResource DeffaultTextBox}" Grid.Column="1" Grid.Row="2" Text="{Binding Unit}"/>
+        <TextBlock Text="Количество" Style="{StaticResource DeffaultTextBlock2}" Grid.Row="4"/>
+        <TextBox Style="{StaticResource DeffaultTextBox}" Grid.Column="1" Grid.Row="4" Text="{Binding Quantity}"/>
+        <TextBlock Text="Цена" Style="{StaticResource DeffaultTextBlock2}" Grid.Row="12"/>
+        <TextBox Style="{StaticResource DeffaultTextBox}" Grid.Column="1" Grid.Row="12" Text="{Binding Cost}"/>
+        <TextBlock Text="Сумма для произвадства" Style="{StaticResource DeffaultTextBlock2}" Grid.Row="14"/>
+        <TextBox Style="{StaticResource DeffaultTextBox}" Grid.Column="1" Grid.Row="14" Text="{Binding SummForProduction}"/>
+        <Button  Command="{Binding BtnSaveClick}" Grid.Row="15" Grid.Column="1" Content="Сохранить" Style="{StaticResource LeftWindowButton}"/>
     </Grid>
 </Window>
 

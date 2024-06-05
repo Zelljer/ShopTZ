@@ -5,24 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShopTZ"
         mc:Ignorable="d"
-        Title="Journal" Height="450" Width="450">
+        Title="Journal" Height="450" Width="450" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="399*"/>
-
         </Grid.RowDefinitions>
-
-        <DataGrid x:Name="DGrid" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding ReceiptList}" IsReadOnly="True">
+        <DataGrid Grid.Row="1" Style="{StaticResource DeffaultDataGrid}" ItemsSource="{Binding ReceiptList}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding ReceiptID}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
-                <DataGridTextColumn Header="Покупатель" Binding="{Binding User.UserName}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
-                <DataGridTextColumn Header="Дата покупки" Binding="{Binding ReceiptDate}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
-                <DataGridTextColumn Header="Сумма" Binding="{Binding ReceiptSumm}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
-                <DataGridTextColumn Header="Товары" Binding="{Binding ReceiptProducts}" Width="*" FontFamily="TW Cen MT"></DataGridTextColumn>
+                <DataGridTextColumn Header="ID" Binding="{Binding ReceiptID}" Width="*" />
+                <DataGridTextColumn Header="Покупатель" Binding="{Binding User.UserName}" Width="*" />
+                <DataGridTextColumn Header="Дата покупки" Binding="{Binding ReceiptDate}" Width="*" />
+                <DataGridTextColumn Header="Сумма" Binding="{Binding ReceiptSumm}" Width="*" />
+                <DataGridTextColumn Header="Товары" Binding="{Binding ReceiptProducts}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
-        <ComboBox x:Name="FilterBox" ItemsSource="{Binding FiltrList}" SelectedIndex="{Binding SelectedIndex}" HorizontalAlignment="Left" Margin="310,0,0,0" VerticalAlignment="Center" Width="120"/>
-        <TextBlock HorizontalAlignment="Left" Margin="238,0,0,0" TextWrapping="Wrap" Text="Фильтрация: " VerticalAlignment="Center"/>
+        <ComboBox ItemsSource="{Binding FiltrList}" SelectedIndex="{Binding SelectedIndex}"/>
+        <TextBlock Text="Фильтрация: " Style="{StaticResource FilterTextBlock}"/>
     </Grid>
 </Window>

@@ -5,13 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ShopTZ.Windows"
         mc:Ignorable="d"
-        Title="InfoProduct" Height="239" Width="523">
+        Title="InfoProduct" Height="239" Width="523" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300*"/>
             <ColumnDefinition Width="600*"/>
         </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -34,22 +33,16 @@
             <Label Content="ID:"/>
             <Label Content="{Binding ID}"/>
         </StackPanel>
-
-        <TextBlock Text="Название" HorizontalAlignment="Center" FontSize="13" Grid.Row="1"/>
-        <TextBlock Height="25" Width="150" Grid.Column="1"  HorizontalAlignment="Left" Grid.Row="1" Text="{Binding Name}"/>
-
-        <TextBlock Text="Ед. изменения"  HorizontalAlignment="Center" FontSize="13" Grid.Row="2"/>
-        <TextBlock Height="25" Width="150" Grid.Column="1"  HorizontalAlignment="Left" Grid.Row="2" Text="{Binding Unit}"/>
-
-        <TextBlock Text="Количество" HorizontalAlignment="Center" FontSize="13" Grid.Row="4"/>
-        <TextBlock Height="25" Width="150" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="4" Text="{Binding Quantity}"/>
-
-        <TextBlock Text="Цена" HorizontalAlignment="Center" FontSize="13" Grid.Row="12"/>
-        <TextBlock Height="25" Width="150" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="12" Text="{Binding Cost}"/>
-
-        <TextBlock Text="Сумма для произвадства" HorizontalAlignment="Center" FontSize="13" Grid.Row="14"/>
-        <TextBlock Height="25" Width="150" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="14" Text="{Binding SummForProduction}"/>
-
-        <Button x:Name="BtnExc" Command="{Binding BtnExc_Click}" Grid.Row="15" Grid.Column="1" Width="150" Content="Вывести в Excel" HorizontalAlignment="Left"/>
+        <TextBlock Text="Название" Style="{StaticResource DeffaultTextBlock2}" Grid.Row="1"/>
+        <TextBlock Grid.Column="1" Style="{StaticResource DeffaultTextBlock}" Grid.Row="1" Text="{Binding Name}"/>
+        <TextBlock Text="Ед. изменения"  Style="{StaticResource DeffaultTextBlock2}" Grid.Row="2"/>
+        <TextBlock Grid.Column="1" Style="{StaticResource DeffaultTextBlock}" Grid.Row="2" Text="{Binding Unit}"/>
+        <TextBlock Text="Количество" Style="{StaticResource DeffaultTextBlock2}" Grid.Row="4"/>
+        <TextBlock Grid.Column="1" Style="{StaticResource DeffaultTextBlock}" Grid.Row="4" Text="{Binding Quantity}"/>
+        <TextBlock Text="Цена" Style="{StaticResource DeffaultTextBlock2}" Grid.Row="12"/>
+        <TextBlock Grid.Column="1" Style="{StaticResource DeffaultTextBlock}" Grid.Row="12" Text="{Binding Cost}"/>
+        <TextBlock Text="Сумма для произвадства" Style="{StaticResource DeffaultTextBlock2}" Grid.Row="14"/>
+        <TextBlock Grid.Column="1" Style="{StaticResource DeffaultTextBlock}" Grid.Row="14" Text="{Binding SummForProduction}"/>
+        <Button Command="{Binding BtnExc_Click}" Grid.Row="15" Grid.Column="1" Content="Вывести в Excel" Style="{StaticResource LeftWindowButton}"/>
     </Grid>
 </Window>
