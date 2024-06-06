@@ -28,7 +28,7 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Width" Value="176"/>
         </Style>
-        <Style TargetType="StackPanel">
+        <Style TargetType="StackPanel" x:Key="PlusMinusStackPanel">
             <Setter Property="Orientation" Value="Horizontal"/>
         </Style>
         <Style TargetType="ComboBox">

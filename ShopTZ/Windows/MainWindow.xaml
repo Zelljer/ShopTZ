@@ -27,7 +27,7 @@
                 <DataGridTemplateColumn Width="auto" Header="В корзину">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel>
+                            <StackPanel Style="{StaticResource PlusMinusStackPanel}">
                                 <Button Content="-" Command="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=DataContext.Btn_Minus_Click}" Style="{StaticResource PlusMinusButton}"/>
                                 <TextBlock Text="{Binding BuyCount}" Style="{StaticResource BuyCountTextBlock}"/>
                                 <Button Content="+" Command="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=DataContext.Btn_Plus_Click}" Style="{StaticResource PlusMinusButton}"/>
